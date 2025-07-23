@@ -44,12 +44,14 @@ import { ForgotPasswordComponent } from './forgot-password.component';
 import path from 'path';
 import { HomeComponent } from './user/home/home.component';
 import { AppComponent } from './app.component';
-//import { AccueilComponent } from './Accueil/accueil.component';
-
+import { AccueilComponent } from './Accueil/accueil.component';
+import { AccuelComponent } from './acceul.component';
+import { LoginComponent } from './login.component';
+import { ConnComponent } from './log.component';
 export const routes: Routes = [ 
 
   { path: 'register', component: RegisterComponent },
-  //{ path: 'accueil', component: AccueilComponent},
+  { path: 'accueil', component: ConnComponent},
   { path: 'contact',component: ContactComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'contact', component: ContactComponent },
@@ -57,7 +59,7 @@ export const routes: Routes = [
   { path: 'login', component: ConnexionComponent },
 
   // Redirection par défaut
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/accueil', pathMatch: 'full' },
 
 
 

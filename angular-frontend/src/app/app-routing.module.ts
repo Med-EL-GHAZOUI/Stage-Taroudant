@@ -4,9 +4,10 @@ import { AuthGuard } from './auth/auth.guard';
 import { RoleGuard } from './role.guard';
 import { ConnexionComponent } from './Connexion/login.component';
 import { AccueilComponent } from './Accueil/accueil.component';
+import { AccuelComponent } from './acceul.component';
 
 const routes: Routes = [
-  { path: '', component: AccueilComponent },
+  { path: '', component: AccuelComponent },
   { path: 'login', component: ConnexionComponent },
   {
     path: 'admin',
