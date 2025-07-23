@@ -10,13 +10,14 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ConnComponent, CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './Accueil/accueil.component.html',
   styleUrls: ['./login.component.css']
 
 })
 export class ConnComponent {
-  showForm = false; // Ajout d'une variable d'état pour afficher le formulaire
+  private showForm: string = 'login';
+  y = this.showForm;
   loginData = {
     username: '',
     password: ''
