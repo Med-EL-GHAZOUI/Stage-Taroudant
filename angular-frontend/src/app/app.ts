@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginComponent } from './login.component'; // adapte le chemin selon ton projet
+import { LoginComponent } from './Connexion/login.component'; // adapte le chemin selon ton projet
 //import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';

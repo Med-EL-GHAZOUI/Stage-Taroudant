@@ -1,33 +1,49 @@
+// app.module.ts - Fichier généré automatiquement
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { RolesGuard } from './auth/roles.guard';
-import { APP_GUARD } from '@nestjs/core';
-import { ManagerModule } from './manager/manager.module';
-import { AdminModule } from './admin/admin.module';
 import { RhModule } from './rh/rh.module';
+import { AdminModule } from './admin/admin.module';
+import { ManagerModule } from './manager/manager.module';
+import { EmployeeModule } from './employee/employee.module';
+import { UsersModule } from './users/users.module';
+import { User } from './users/user.entity';
+import { AppController } from './app.controller';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'gpec.sqlite',
-      autoLoadEntities: true,
-      synchronize: true, // à désactiver en prod
+    // ... tes autres modules
+  ],
+  
+})
+
+
+
+@Module({
+  imports:[
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'dist/nom-du-projet-angular'),
     }),
-    AuthModule, UsersModule, ManagerModule, AdminModule, RhModule
+      TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: '',
+      database: 'STAGE_COPAG',
+      entities: [User],
+      synchronize: true,
+    }),
+    AuthModule,
+    UsersModule,
+    EmployeeModule,
+    ManagerModule,
+    AdminModule,
+    RhModule,
   ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  controllers: [AppController],
+  providers: [],
 })
 export class AppModule {}

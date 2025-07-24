@@ -2,13 +2,12 @@ import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 import { RoleGuard } from './role.guard';
-import { ConnexionComponent } from './Connexion/login.component';
-import { AccueilComponent } from './Accueil/accueil.component';
+import { LoginComponent } from './Connexion/login.component';
 import { AccuelComponent } from './acceul.component';
 
 const routes: Routes = [
   { path: '', component: AccuelComponent },
-  { path: 'login', component: ConnexionComponent },
+  { path: 'login', component: LoginComponent },
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin-module').then(m => m.AdminModule),

@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-import { ConnexionComponent} from './Connexion/login.component';
 import { AuthService } from './auth/auth.service';
-import { Routes } from '@angular/router';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
-
 
 @Component({
   selector: 'app-login',
@@ -13,41 +9,44 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, RouterModule],
   templateUrl: './Accueil/accueil.component.html',
   styleUrls: ['./login.component.css']
-
 })
 export class ConnComponent {
-  showForm = false; // Ajout d'une variable d'état pour afficher le formulaire
+  showForm = false;
+  isMenuOpen = false;
+  error = '';
+  currentYear: number = new Date().getFullYear();
+
   loginData = {
-    username: '',
+    email: '',
     password: ''
   };
-  error = '';
-  isMenuOpen = false;
+
+  constructor(private auth: AuthService, private router: Router) {}
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
-  currentYear: number = new Date().getFullYear();
-  constructor(private auth: AuthService, private router: Router) {}
 
   login() {
     this.auth.login(this.loginData).subscribe({
       next: (res: any) => {
-        this.auth.saveToken(res.access_token);
+        this.auth.saveToken(res.access_token, res.user.role);
 
         const role = res.user.role;
-        if (role === 'admin') this.router.navigate(['/admin']);
-        else if (role === 'rh') this.router.navigate(['/rh']);
-        else if (role === 'manager') this.router.navigate(['/manager']);
-        else if (role === 'employee') this.router.navigate(['/employee']);
-        else if (role === 'guest') this.router.navigate(['/guest']);
-        else if (role === 'user') this.router.navigate(['/user']);
-        else if (role === 'guest') this.router.navigate(['/guest']);
-        else if (role === 'user') this.router.navigate(['/user']);
+        switch (role) {
+          case 'admin': this.router.navigate(['/admin']); break;
+          case 'rh': this.router.navigate(['/rh']); break;
+          case 'manager': this.router.navigate(['/manager']); break;
+          case 'employee': this.router.navigate(['/employee']); break;
+          case 'user': this.router.navigate(['/user']); break;
+          case 'guest': this.router.navigate(['/guest']); break;
+          default: this.router.navigate(['/']);
+        }
+
         this.error = '';
       },
       error: () => {
-        this.error = 'Nom d’utilisateur ou mot de passe incorrect';
+        this.error = 'Adresse email ou mot de passe incorrect.';
       }
     });
   }

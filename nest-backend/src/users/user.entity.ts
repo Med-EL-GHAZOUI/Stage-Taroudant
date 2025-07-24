@@ -1,23 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
-import { Formation } from './formation.entity';
+// user.entity.ts - Fichier généré automatiquement
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Role } from '../shared/enums/role.enum';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   username: string;
 
   @Column()
   password: string;
 
-  @Column()
-  role: 'admin' | 'rh' | 'user';
-
-  @Column({ unique: true })
-  email: string;
-
-  @ManyToMany(() => Formation, formation => formation.users, { cascade: true })
-  formations: Formation[];
+  @Column({ type: 'enum', enum: Role, default: Role.EMPLOYE })
+  role: Role;
 }

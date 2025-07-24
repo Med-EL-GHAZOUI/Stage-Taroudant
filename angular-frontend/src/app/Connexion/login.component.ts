@@ -1,149 +1,81 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
-  selector: 'app-connecter',
+  selector: 'app-login',
   standalone: true,
-  imports: [ CommonModule, RouterModule, FormsModule ], 
-  template: `
+  imports: [CommonModule, FormsModule,RouterLink],
+  template : `
+  <div class="login-container">
+  <div class="login-card">
+    <header class="login-header">
+      <img src="./assets/images/img2.png" alt="Logo de l'entreprise" class="logo">
+      <h1>Connexion à votre compte</h1>
+      <p class="subtitle">Gestion Prévisionnelle des Emplois et Compétences</p>
+    </header>
 
-  <div class="gpec-container">
-  <header class="gpec-header">
-    <h1>Connexion</h1>
-    <p class="subtitle">Accédez à votre espace GPEC</p>
-  </header>
-  
-  <main class="gpec-main">
-    <form (ngSubmit)="login()" class="login-form">
+    <form (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-group">
-        <label for="username">Nom d'utilisateur</label>
-        <input id="username" name="username" [(ngModel)]="loginData.username" required autocomplete="username" />
+        <label for="email">Adresse email</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          [(ngModel)]="loginData.email"
+          placeholder="votre@email.com"
+          required
+          [disabled]="isLoading"
+          autocomplete="email">
       </div>
-      
+
       <div class="form-group">
         <label for="password">Mot de passe</label>
-        <input id="password" name="password" [(ngModel)]="loginData.password" type="password" required autocomplete="current-password" />
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          [(ngModel)]="loginData.password"
+          placeholder="••••••••"
+          required
+          [disabled]="isLoading"
+          autocomplete="current-password">
       </div>
-      
-      <button type="submit" class="login-btn">Se connecter</button>
-      
-      <div *ngIf="error" class="error-message">{{ error }}</div>
-      
-      <div class="form-links">
+
+      <button type="submit" class="submit-btn" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Se connecter</span>
+      </button>
+
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>{{ errorMessage }}</span>
+      </div>
+ 
+       <div class="form-links">
         <a routerLink="/register">Créer un compte</a>
         <a routerLink="/forgot-password">Mot de passe oublié ?</a>
         <a routerLink="/contact">Besoin d'aide ?</a>
       </div>
     </form>
-  </main>
-  
-  <footer class="gpec-footer">
-    <p>© {{ currentYear }} Système GPEC - Tous droits réservés | Conforme RGPD</p>
-  </footer>
-</div>
+  </div>
 
-<style>
-  .gpec-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    color: #333;
-  }
-  
-  .gpec-header {
-    text-align: center;
-    padding: 2rem 0;
-  }
-  
-  .gpec-header h1 {
-    margin: 0;
-    font-size: 2rem;
-    color: #0066cc;
-  }
-  
-  .subtitle {
-    margin: 0.5rem 0 0;
-    color: #666;
-    font-size: 1.1rem;
-  }
-  
-  .gpec-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-    padding: 2rem;
-    background-color: #f8f9fa;
-  }
-  
-  .login-form {
-    background: #fff;
-    padding: 2rem 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .form-group {
-    margin-bottom: 1.5rem;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    box-sizing: border-box;
-  }
-  
-  .form-group input:focus {
-    outline: none;
-    border-color: #0066cc;
-    box-shadow: 0 0 0 2px rgba(0,102,204,0.2);
-  }
-  
-  .login-btn {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #0066cc;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin-top: 0.5rem;
-  }
-  
-  .login-btn:hover {
-    background-color: #0052a3;
-  }
-  
-  .login-btn:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-  
-  .error-message {
-    color: #d32f2f;
-    margin: 1rem 0;
-    text-align: center;
-    font-size: 0.9rem;
-  }
-  
+  <footer class="login-footer">
+    <p>© {{ currentYear }} GPEC Entreprise. Tous droits réservés.</p>
+    <div class="footer-links">
+      <a routerLink="/privacy">Confidentialité</a>
+      <a routerLink="/terms">Conditions d'utilisation</a>
+      <a routerLink="/contact">Contact</a>
+    </div>
+  </footer>
+</div> 
+  `,
+  styles: [`
+  /* Import Font Awesome pour les icônes */
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
   .form-links {
     margin-top: 1.5rem;
     text-align: center;
@@ -161,50 +93,287 @@ import { FormsModule } from '@angular/forms';
   .form-links a:hover {
     text-decoration: underline;
   }
-  
-  .gpec-footer {
-    text-align: center;
-    padding: 1.5rem;
-    background-color: #f5f5f5;
-    font-size: 0.9rem;
-    color: #666;
+  /* Variables CSS */
+  :host {
+    --primary-color: #3498db;
+    --primary-dark: #2980b9;
+    --error-color: #e74c3c;
+    --background-color: #f8f9fa;
+    --background-light: #f1f3f5;
+    --text-primary: #2c3e50;
+    --text-secondary: #7f8c8d;
+    --border-color: #dfe6e9;
+    --border-radius: 8px;
+    --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
   }
-</style>
-`
+
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 1.8rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-size: 0.9rem;
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      input {
+        padding: 0.9rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        transition: var(--transition);
+
+        &:focus {
+          outline: none;
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        &:disabled {
+          background-color: var(--background-light);
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .submit-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 48px;
+
+    &:hover:not(:disabled) {
+      background-color: var(--primary-dark);
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  .error-message {
+    color: var(--error-color);
+    background-color: rgba(231, 76, 60, 0.1);
+    padding: 0.8rem 1rem;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+      font-size: 1rem;
+    }
+  }
+
+  .forgot-password {
+    text-align: center;
+    margin-top: 0.5rem;
+
+    a {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: var(--transition);
+
+      &:hover {
+        color: var(--primary-color);
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .register-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+
+    a {
+      color: var(--primary-color);
+      font-weight: 500;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .login-footer {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+
+      a {
+        color: var(--text-secondary);
+        text-decoration: none;
+
+        &:hover {
+          color: var(--primary-color);
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .login-container {
+      padding: 1rem;
+    }
+
+    .login-card {
+      padding: 1.5rem;
+    }
+  }
+
+  /* Animation du spinner */
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+  }
+`],
 })
-export class ConnexionComponent {
+export class LoginComponent {
   loginData = {
-    username: '',
+    email: '',
     password: ''
   };
-  error: string | null = null;
+  
+  errorMessage = '';
   currentYear: number = new Date().getFullYear();
-  constructor(private auth: AuthService, private router: Router) {} 
+  isLoading = false;
 
-  login() {
-    console.log(this.loginData);
-     this.auth.login(this.loginData).subscribe({
-      next: (res: any) => {
-        this.auth.saveToken(res.access_token);
+  constructor(
+    private authService: AuthService, 
+    private router: Router
+  ) {}
 
-        const role = res.user.role;
-        if (role === 'admin') this.router.navigate(['/admin']);
-        else if (role === 'rh') this.router.navigate(['/rh']);
-        else if (role === 'manager') this.router.navigate(['/manager']);
-        else if (role === 'employee') this.router.navigate(['/employee']);
-        else if (role === 'guest') this.router.navigate(['/guest']);
-        else if (role === 'user') this.router.navigate(['/user']);
-        else if (role === 'guest') this.router.navigate(['/guest']);
-        else if (role === 'user') this.router.navigate(['/user']);
-        this.error = '';
-      },
-      error: () => {
-        this.error = 'Nom d’utilisateur ou mot de passe incorrect';
-      }
+  onSubmit() {
+    if (!this.isFormValid()) return;
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.authService.login(this.loginData).subscribe({
+      next: (response) => this.handleLoginSuccess(response),
+      error: (error) => this.handleLoginError(error)
     });
   }
+
+  private isFormValid(): boolean {
+    if (!this.loginData.email || !this.loginData.password) {
+      this.errorMessage = 'Veuillez remplir tous les champs';
+      return false;
+    }
+    return true;
+  }
+
+  private handleLoginSuccess(response: any): void {
+    this.authService.saveToken(response.access_token, response.user.role);
+    this.navigateBasedOnRole(response.user.role);
+    this.isLoading = false;
+  }
+
+  private handleLoginError(error: any): void {
+    this.isLoading = false;
+    
+    switch (error.status) {
+      case 401:
+        this.errorMessage = 'Email ou mot de passe incorrect';
+        break;
+      case 0:
+        this.errorMessage = 'Connexion au serveur impossible. Vérifiez votre connexion internet.';
+        break;
+      default:
+        this.errorMessage = 'Une erreur est survenue. Veuillez réessayer.';
+    }
+  }
+
+  private navigateBasedOnRole(role: string): void {
+    const routes: Record<string, string> = {
+      'admin': '/admin/dashboard',
+      'rh': '/rh/employees',
+      'manager': '/manager/team',
+      'employee': '/employee/profile',
+      'guest': '/guest/dashboard'
+    };
+
+    this.router.navigate([routes[role] || '/']);
+  }
 }
-
-
-
-

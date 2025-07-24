@@ -35,7 +35,7 @@ import { RhAssocierCompetenceComponent } from './rh/fiches-poste/associer-compet
 import { RhCampagnesEvaluationComponent } from './rh/campagnes-evaluation/campagnes-evaluation.component';
 import { RhDefinirObjectifsComponent } from './rh/campagnes-evaluation/definir-objectifs.component';
 import { RhNotifierEmployesComponent } from './rh/campagnes-evaluation/notifier-employes.component';
-import { ConnexionComponent } from './Connexion/login.component';
+import { LoginComponent } from './Connexion/login.component';
 import { UnauthorizedComponent } from './unauthorized.component';
 import { ContactComponent } from './Contact/contact.component';
 import { RegisterComponent } from './Inscription/register.component';
@@ -46,8 +46,13 @@ import { HomeComponent } from './user/home/home.component';
 import { AppComponent } from './app.component';
 import { AccueilComponent } from './Accueil/accueil.component';
 import { AccuelComponent } from './acceul.component';
-import { LoginComponent } from './login.component';
 import { ConnComponent } from './log.component';
+
+
+
+
+
+
 export const routes: Routes = [ 
 
   { path: 'register', component: RegisterComponent },
@@ -56,7 +61,7 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
-  { path: 'login', component: ConnexionComponent },
+  { path: 'login', component: LoginComponent },
 
   // Redirection par défaut
   { path: '', redirectTo: '/accueil', pathMatch: 'full' },

@@ -6,7 +6,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AccueilComponent } from './Accueil/accueil.component';
 import { ConnexionComponent } from './Connexion/connexion.component';
-import { LoginComponent } from './login.component';
+import { LoginComponent } from './Connexion/login.component';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 

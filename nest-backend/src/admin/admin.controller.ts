@@ -1,29 +1,15 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
-import { Roles } from '../auth/roles.decorator';
+// admin.controller.ts - Fichier généré automatiquement
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Roles } from '../shared/decorators/roles.decorator';
+import { Role } from '../shared/enums/role.enum';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('admin')
+@UseGuards(RolesGuard)
+@Roles(Role.ADMIN)
 export class AdminController {
-  @Roles('admin')
-  @Post('referentiels')
-  configurerReferentiels(@Body() body: any) {
-    return { message: 'Référentiels configurés', data: body };
+  @Get('referentiels')
+  getReferentiels() {
+    return 'Configuration des référentiels';
   }
-
-  @Roles('admin')
-  @Post('roles-permissions')
-  gererRolesPermissions(@Body() body: any) {
-    return { message: 'Rôles et permissions gérés', data: body };
-  }
-
-  @Roles('admin')
-  @Post('roles-permissions/associer-competence')
-  associerCompetence(@Body() body: any) {
-    return { message: 'Compétence associée', data: body };
-  }
-
-  @Roles('admin')
-  @Post('comptes-utilisateurs')
-  gererComptesUtilisateurs(@Body() body: any) {
-    return { message: 'Compte utilisateur géré', data: body };
-  }
-} 
+}
