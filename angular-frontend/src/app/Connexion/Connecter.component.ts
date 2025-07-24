@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // ✅ Ajouter FormsModule
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-connecter',
   standalone: true,
-  imports: [ CommonModule, RouterModule, FormsModule ], // ✅ Ajouter ici aussi
+  imports: [ CommonModule, RouterModule, FormsModule ],
   template: `
   <div class="gpec-container">
   <header class="gpec-header">
@@ -20,12 +20,11 @@ import { FormsModule } from '@angular/forms'; // ✅ Ajouter FormsModule
         <label for="username">Nom d'utilisateur</label>
         <input id="username" name="username" [(ngModel)]="loginData.username" required autocomplete="username" />
       </div>
-      
+
       <div class="form-group">
         <label for="password">Mot de passe</label>
         <input id="password" name="password" [(ngModel)]="loginData.password" type="password" required autocomplete="current-password" />
       </div>
-      
       <button type="submit" class="login-btn">Se connecter</button>
       
       <div *ngIf="error" class="error-message">{{ error }}</div>
