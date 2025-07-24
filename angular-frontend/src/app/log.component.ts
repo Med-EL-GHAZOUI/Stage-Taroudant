@@ -16,8 +16,7 @@ import { CommonModule } from '@angular/common';
 
 })
 export class ConnComponent {
-  private showForm: string = 'login';
-  y = this.showForm;
+  showForm = false; // Ajout d'une variable d'état pour afficher le formulaire
   loginData = {
     username: '',
     password: ''

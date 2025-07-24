@@ -60,11 +60,14 @@ export const routes: Routes = [
 
   // Redirection par défaut
   { path: '', redirectTo: '/accueil', pathMatch: 'full' },
-
+  // Home 
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
 
 
   // Employé
   { path: 'user', component: UserProfilComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['user', 'employee'] } },
+  { path: 'user/home', component: HomeComponent, canActivate: [AuthGuard] },
+  {path : 'user/profil' , component: UserProfilComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['user', 'employee'] } },
   { path: 'user/profil/:id', component: UserProfilComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['user', 'employee'] } },
   { path: 'user/auto-evaluation', component: UserAutoEvaluationComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['user', 'employee'] } },
   { path: 'user/formations', component: UserFormationsComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['user', 'employee'] } },
@@ -75,6 +78,7 @@ export const routes: Routes = [
  
   // Manager
   { path: 'manager', component: ManagerCompetencesEquipeComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['manager'] } },
+  
   { path: 'manager/competences-equipe', component: ManagerCompetencesEquipeComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['manager'] } },
   { path: 'manager/proposer-formations', component: ManagerProposerFormationsComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['manager'] } },
   { path: 'manager/suivi-competences', component: ManagerSuiviCompetencesComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['manager'] } },

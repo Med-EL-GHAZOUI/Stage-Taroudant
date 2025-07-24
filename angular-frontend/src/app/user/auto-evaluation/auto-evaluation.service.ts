@@ -1,28 +1,34 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
 export interface AutoEvaluation {
   id: number;
-  employeId: number;
   date: string;
+  employeId: number;
   commentaire: string;
-  note: number;
+  note?: number; // <-- correction ici
 }
+
+// Simule un service (tu dois déjà avoir les vraies méthodes HTTP ici)
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AutoEvaluationService {
-  constructor(private http: HttpClient) {}
+  private evaluations: AutoEvaluation[] = [];
 
   getAutoEvaluations(employeId: number): Observable<AutoEvaluation[]> {
-    return this.http.get<AutoEvaluation[]>(`/api/users/auto-evaluation/${employeId}`);
+    return of(this.evaluations.filter(e => e.employeId === employeId));
   }
 
-  creerAutoEvaluation(evaluation: Partial<AutoEvaluation>): Observable<AutoEvaluation> {
-    return this.http.post<AutoEvaluation>('/api/users/auto-evaluation', evaluation);
+  creerAutoEvaluation(evaluation: Omit<AutoEvaluation, 'id'>): Observable<void> {
+    const newEval: AutoEvaluation = {
+      id: Date.now(),
+      ...evaluation
+    };
+    this.evaluations.push(newEval);
+    return of();
   }
 
   supprimerAutoEvaluation(id: number): Observable<void> {
-    return this.http.delete<void>(`/api/users/auto-evaluation/${id}`);
+    this.evaluations = this.evaluations.filter(e => e.id !== id);
+    return of();
   }
-} 
+}
